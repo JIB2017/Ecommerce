@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 let port = process.env.PORT || 4201;
 const app = express();
+let cliente = require("./routes/cliente");
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/Ecommerce")
@@ -17,6 +18,19 @@ mongoose.connect("mongodb://127.0.0.1:27017/Ecommerce")
 })
 .catch((err, res) => {
     console.log(err);
-})
+});
+
+app.use(bodyparser.urlencoded({extended: true}))
+app.use(bodyparser.json({limit: "50mb", extended: true}))
+
+app.use((req,res,next) => {
+    res.header("Access-Control-Allow-Origins", "*");
+    res.header("Access-Control-Allow-Headers", "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Access-Controll-Allow-Request-Method");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+    res.header("Allow", "GET, PUT, POST, DELETE, OPTIONS");
+    next();
+});
+
+app.use("/api",cliente);
 
 module.exports = app;
