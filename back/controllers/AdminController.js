@@ -1,6 +1,6 @@
 'use strict'
 
-let Admin = require("../models/cliente");
+let Admin = require("../models/admin");
 let bcrypt = require("bcrypt-nodejs");
 
 const registro_admin = async function(req, res) {
