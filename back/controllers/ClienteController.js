@@ -8,7 +8,9 @@ const registro_cliente = async function(req, res) {
     let cliente_arr = [];
 
     cliente_arr = await Cliente.find({email: data.email});
+    // buscamos si ya existe
     if (cliente_arr.length == 0) {
+        // pregunta si el usuario ingreso una contraseña
         if (data.password) {
             bcrypt.hash(data.password, null, null, async function(err, hash) {
                 if (hash) {
@@ -28,6 +30,30 @@ const registro_cliente = async function(req, res) {
     }
 }
 
+const login_cliente = async function(req, res) {
+    let data = req.body;
+    let cliente_login = [];
+    
+    cliente_login = await Cliente.find({email: data.email});
+    // buscamos si ya existe
+    if (cliente_login.length == 0) {
+        res.status(200).send({message: "No se encontro el correo"});
+    } else {
+        // LOGIN
+        let user = cliente_login[0];
+        console.log(user)
+        
+        bcrypt.compare(data.password, user.password, async function(error, check) {
+            if (check) {
+                res.status(200).send({data: user});
+            } else {
+                res.status(200).send({message: "La contraseña es incorrecta", data: undefined});
+            }
+        })
+    }
+}
+
 module.exports = {
-    registro_cliente
+    registro_cliente,
+    login_cliente,
 }

@@ -28,6 +28,30 @@ const registro_admin = async function(req, res) {
     }
 }
 
+const login_admin = async function(req, res) {
+    let data = req.body;
+    let admin_login = [];
+    
+    admin_login = await Admin.find({email: data.email});
+    // buscamos si ya existe
+    if (admin_login.length == 0) {
+        res.status(200).send({message: "No se encontro el correo"});
+    } else {
+        // LOGIN
+        let admin = admin_login[0];
+        console.log(admin)
+        
+        bcrypt.compare(data.password, admin.password, function(error, check) {
+            if (check) {
+                res.status(200).send({data: admin});
+            } else {
+                res.status(200).send({message: "La contraseña es incorrecta", data: undefined});
+            }
+        })
+    }
+}
+
 module.exports = {
-    registro_admin
+    registro_admin,
+    login_admin,
 }
