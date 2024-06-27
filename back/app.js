@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 
 let port = process.env.PORT || 4201;
 const app = express();
-let cliente = require("./routes/cliente");
+let cliente_route = require("./routes/cliente");
+let admin_route = require("./routes/admin");
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/Ecommerce")
@@ -31,6 +32,7 @@ app.use((req,res,next) => {
     next();
 });
 
-app.use("/api",cliente);
+app.use("/api",cliente_route);
+app.use("/api",admin_route);
 
 module.exports = app;

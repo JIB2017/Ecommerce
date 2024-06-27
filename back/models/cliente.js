@@ -13,7 +13,7 @@ let ClienteSchema = Schema({
     telefono: {type: String, required: false},
     genero: {type: String, required: false},
     f_nacimiento: {type: String, required: false},
-    dni: {type: String, required: true},
+    dni: {type: String, required: false},
 });
 
 module.exports = mongoose.model("cliente", ClienteSchema);

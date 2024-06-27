@@ -1,20 +1,20 @@
 'use strict'
 
-let Cliente = require("../models/cliente");
+let Admin = require("../models/cliente");
 let bcrypt = require("bcrypt-nodejs");
 
-const registro_cliente = async function(req, res) {
+const registro_admin = async function(req, res) {
     let data = req.body;
-    let cliente_arr = [];
+    let admin_arr = [];
 
-    cliente_arr = await Cliente.find({email: data.email});
-    if (cliente_arr.length == 0) {
+    admin_arr = await Admin.find({email: data.email});
+    if (admin_arr.length == 0) {
         if (data.password) {
             bcrypt.hash(data.password, null, null, async function(err, hash) {
                 if (hash) {
                     data.password = hash;
-                    await Cliente.create(data);
-                    res.status(200).send({message: "Cliente agregado"});
+                    await Admin.create(data);
+                    res.status(200).send({message: "Administrador agregado"});
                 } else {
                     res.status(200).send({message: "errorServer", data: undefined});
                 }
@@ -29,5 +29,5 @@ const registro_cliente = async function(req, res) {
 }
 
 module.exports = {
-    registro_cliente
+    registro_admin
 }
