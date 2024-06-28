@@ -2,6 +2,7 @@
 
 let Cliente = require("../models/cliente");
 let bcrypt = require("bcrypt-nodejs");
+let jwt = require("../helpers/jwt");
 
 const registro_cliente = async function(req, res) {
     let data = req.body;
@@ -45,7 +46,10 @@ const login_cliente = async function(req, res) {
         
         bcrypt.compare(data.password, user.password, async function(error, check) {
             if (check) {
-                res.status(200).send({data: user});
+                res.status(200).send({
+                    data: user,
+                    token: jwt.createToken(user),
+                });
             } else {
                 res.status(200).send({message: "La contraseña es incorrecta", data: undefined});
             }

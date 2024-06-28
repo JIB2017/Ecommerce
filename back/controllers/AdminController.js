@@ -2,6 +2,7 @@
 
 let Admin = require("../models/admin");
 let bcrypt = require("bcrypt-nodejs");
+let jwt = require("../helpers/jwt");
 
 const registro_admin = async function(req, res) {
     let data = req.body;
@@ -43,7 +44,10 @@ const login_admin = async function(req, res) {
         
         bcrypt.compare(data.password, admin.password, function(error, check) {
             if (check) {
-                res.status(200).send({data: admin});
+                res.status(200).send({
+                    data: admin,
+                    token: jwt.createToken(admin),
+                });
             } else {
                 res.status(200).send({message: "La contraseña es incorrecta", data: undefined});
             }
